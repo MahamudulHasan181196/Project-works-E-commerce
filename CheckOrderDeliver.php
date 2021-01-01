@@ -1,38 +1,81 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="CheckOrderDeliver.css">
+  <link rel="stylesheet" type="text/css" href="../css/mystyle.css" >
+	<link rel="stylesheet" type="text/css" href="../css/footer.css" >
+	<link rel="stylesheet" type="text/css" href="../css/colorchng.css" >
+	<div class="sticky">
+<div class="header"><h3>Order Details</h3></div>
+<div class="topnav">
+<a href="DeliveryHome.php"> < </a>
+
+</div>
+</div>
+  <style>
+    body {
+      background-color: antiquewhite;
+      /* background-repeat: no-repeat; */
+    }
+  </style>
+</head>
+
 <body>
+  <div>
+    <center>
 
-<h3>Order Details</h3>
+      <h1></h1>
+      <input type="text" id="search_data" name="search_data"><button class="button" type="button">Search</button>
+      <br><br>
+      <table id="result" class="result">
 
-<?php
-   include('../control/DB/conn.php');
-     $sqlget = "SELECT * FROM orders";
-     $sqldata = mysqli_query($con, $sqlget) or die('Error');
+      </table>
+      <!-- <div id="result" class="result"></div> -->
+    </center>
+  </div>
+  <a href="DeliveryHome.php"><button class="backbtn">Back</button></a>
+  <a href="Logout.php"><button class="backbtn">Logout</button></a>
 
-     echo "<table style='width:100%' border='1'>";
-     echo "<tr> <th>Order ID</th> <th>Product ID</th> <th>Buyer ID</th> <th>Quantity</th> <th>Total Price</th>  <th>Delivery Status</th>  </tr>";
-     while($row = mysqli_fetch_array($sqldata, MYSQLI_ASSOC)){
-           
-      echo "<tr><td>";
-      echo $row['oId'];
-      echo "</td><td>";
-      echo $row['pId'];
-      echo "</td><td>";
-      echo $row['bId'];
-      echo "</td><td>";
-      echo $row['quantity'];
-      echo "</td><td>";
-      echo $row['totalPrice'];
-      echo "</td><td>";
-      echo $row['status']    .   "<button type='button'>Update status</button>";
-      echo "</td></tr>";
+	<br><br>
 
-     }
-     echo "</table>";
- ?>
- <br><br>
- <input type="text" id="Search" name="Search"><button type="button">Search</button>
+<br>
+
 <br><br>
- <a href="DeliveryHome.php">Back</a>
- </body>
+      <div class="footer">
+  <p>© 2020 Manik|Nowrin|Syed|Mahamudul All Rights Reserved</p>
+  <p><a href="AboutUs.php">About Us</a></p>
+</div>
+
+</body>
+
 </html>
+<script>
+  $(document).ready(function() {
+
+    load_data();
+
+    function load_data(query) {
+      $.ajax({
+        url: "fetch.php",
+        method: "POST",
+        data: {
+          query: query
+        },
+        success: function(data) {
+          $('#result').html(data);
+        }
+      });
+    }
+    $('#search_data').keyup(function() {
+      var search = $(this).val();
+      if (search != '') {
+        load_data(search);
+      } else {
+        load_data();
+      }
+    });
+  });
+</script>
